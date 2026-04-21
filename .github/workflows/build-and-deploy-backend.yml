@@ -57,6 +57,7 @@ jobs:
       - name: Create .env file for Docker
         run: |
           echo "TAG=${{ env.SHORT_SHA }}" > .env
+          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
 
       - name: copy files to host
         uses: appleboy/scp-action@v0.1.7

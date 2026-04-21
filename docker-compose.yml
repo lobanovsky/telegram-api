@@ -5,6 +5,7 @@ services:
     restart: always
     environment:
       TZ: Europe/Moscow
+      API_KEY: ${API_KEY}
     volumes:
       - ./logs:/app/logs
     ports:
