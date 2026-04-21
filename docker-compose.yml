@@ -1,0 +1,13 @@
+services:
+  telegram-api:
+    image: lobanovsky/telegram-api:${TAG}
+    container_name: telegram-api
+    restart: always
+    environment:
+      TZ: Europe/Moscow
+    volumes:
+      - ./logs:/app/logs
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env

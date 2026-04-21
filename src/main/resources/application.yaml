@@ -1,0 +1,9 @@
+ktor:
+  deployment:
+    port: 8080
+  application:
+    modules:
+      - ru.telegramapi.ApplicationKt.module
+
+api:
+  key: ${API_KEY:changeme}
