@@ -29,7 +29,7 @@ fun Application.configureRouting(apiKey: String, httpClient: HttpClient) {
         post("/send-message") {
             val key = call.request.header("X-Api-Key")
             if (key != apiKey) {
-                application.log.warn("Unauthorized request from ${call.request.origin.remoteHost}, key=${key?.take(8)?.let { "$it…" } ?: "<missing>"}")
+                application.log.warn("Unauthorized request from ${call.request.local.remoteAddress}, key=${key?.take(8)?.let { "$it…" } ?: "<missing>"}")
                 call.respond(HttpStatusCode.Unauthorized, ErrorResponse(error = "Unauthorized"))
                 return@post
             }

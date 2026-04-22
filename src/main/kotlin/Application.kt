@@ -9,6 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -39,7 +40,7 @@ fun Application.module() {
 
     install(StatusPages) {
         exception<Throwable> { call, cause ->
-            application.log.error("Unhandled exception on ${call.request.httpMethod.value} ${call.request.uri}: ${cause.message}", cause)
+            call.application.log.error("Unhandled exception on ${call.request.httpMethod.value} ${call.request.uri}: ${cause.message}", cause)
             call.respond(
                 HttpStatusCode.InternalServerError,
                 ErrorResponse(error = cause.message ?: "Internal server error")
