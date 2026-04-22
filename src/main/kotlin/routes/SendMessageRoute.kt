@@ -29,6 +29,7 @@ fun Application.configureRouting(apiKey: String, httpClient: HttpClient) {
         post("/send-message") {
             val key = call.request.header("X-Api-Key")
             if (key != apiKey) {
+                application.log.warn("Unauthorized request from ${call.request.origin.remoteHost}, key=${key?.take(8)?.let { "$it…" } ?: "<missing>"}")
                 call.respond(HttpStatusCode.Unauthorized, ErrorResponse(error = "Unauthorized"))
                 return@post
             }
@@ -41,6 +42,9 @@ fun Application.configureRouting(apiKey: String, httpClient: HttpClient) {
             }
 
             val body = response.bodyAsText()
+            if (!response.status.isSuccess()) {
+                application.log.warn("Telegram API error: status=${response.status}, chat_id=${request.chat_id}, response=$body")
+            }
             call.respondText(body, ContentType.Application.Json, response.status)
         }
     }

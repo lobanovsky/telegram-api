@@ -39,6 +39,7 @@ fun Application.module() {
 
     install(StatusPages) {
         exception<Throwable> { call, cause ->
+            application.log.error("Unhandled exception on ${call.request.httpMethod.value} ${call.request.uri}: ${cause.message}", cause)
             call.respond(
                 HttpStatusCode.InternalServerError,
                 ErrorResponse(error = cause.message ?: "Internal server error")
