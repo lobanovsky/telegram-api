@@ -15,13 +15,15 @@ import ru.telegramapi.ErrorResponse
 data class SendMessageRequest(
     val bot_token: String,
     val chat_id: Long,
-    val text: String
+    val text: String,
+    val parse_mode: String? = null
 )
 
 @Serializable
 data class TelegramSendRequest(
     val chat_id: Long,
-    val text: String
+    val text: String,
+    val parse_mode: String? = null
 )
 
 fun Application.configureRouting(apiKey: String, httpClient: HttpClient) {
@@ -38,7 +40,7 @@ fun Application.configureRouting(apiKey: String, httpClient: HttpClient) {
 
             val response = httpClient.post("https://api.telegram.org/bot${request.bot_token}/sendMessage") {
                 contentType(ContentType.Application.Json)
-                setBody(TelegramSendRequest(chat_id = request.chat_id, text = request.text))
+                setBody(TelegramSendRequest(chat_id = request.chat_id, text = request.text, parse_mode = request.parse_mode))
             }
 
             val body = response.bodyAsText()
