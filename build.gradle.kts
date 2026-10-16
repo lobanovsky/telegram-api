@@ -30,6 +30,9 @@ ktor {
 }
 
 dependencies {
+    testImplementation(kotlin("test"))
+    testImplementation("io.ktor:ktor-server-test-host")
+    testImplementation("io.ktor:ktor-client-mock")
     implementation("io.ktor:ktor-server-core")
     implementation("io.ktor:ktor-server-netty")
     implementation("io.ktor:ktor-server-call-logging")

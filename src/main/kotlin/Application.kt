@@ -2,6 +2,7 @@ package ru.telegramapi
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation as ClientContentNegotiation
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -14,6 +15,7 @@ import io.ktor.server.response.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import ru.telegramapi.routes.configureRouting
+import ru.telegramapi.routes.configureUpdatesRouting
 
 @Serializable
 data class ErrorResponse(val ok: Boolean = false, val error: String)
@@ -26,6 +28,7 @@ fun Application.module() {
     val apiKey = environment.config.property("api.key").getString()
 
     val httpClient = HttpClient(CIO) {
+        install(HttpTimeout)
         install(ClientContentNegotiation) {
             json(Json { ignoreUnknownKeys = true })
         }
@@ -49,4 +52,5 @@ fun Application.module() {
     }
 
     configureRouting(apiKey, httpClient)
+    configureUpdatesRouting(apiKey, httpClient)
 }
